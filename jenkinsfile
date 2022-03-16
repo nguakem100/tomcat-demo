@@ -18,6 +18,10 @@ node {
 	stage('sonar-analysis') { 
         withSonarQubeEnv('sonarqube') {
             sh "${mvnHome}/bin/mvn sonar:sonar"
+    }
+	stage('tomcat-deployment') { 
+        sshagent(['ec2-user']) {
+            sh "scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/tomcat-deployment1/target/tomcat-demo.war ec2-user@44.201.187.56:/opt/tomcat/webapps"
            }
     }
 }
